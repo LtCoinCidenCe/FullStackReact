@@ -10,20 +10,27 @@ const Statistics = (props) =>
 {
   console.log(props); // so they are already those updated values
   let { good, neutral, bad } = props;
-  let all=good+neutral+bad;
-  let average= (good - bad) / (good+neutral+bad);
-  let positive=100 * good / (good+neutral+bad);
-  
-  return (
-    <div>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>all {all}</div>
-      <div>average {average}</div>
-      <div>positive {positive} %</div>
-    </div>
-  )
+  if (good === 0 && neutral === 0 && bad === 0)
+  {
+    return <div>no feedback given</div>
+  }
+  else
+  {
+    let all = good + neutral + bad;
+    let average = (good - bad) / (good + neutral + bad);
+    let positive = 100 * good / (good + neutral + bad);
+
+    return (
+      <div>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {all}</div>
+        <div>average {average}</div>
+        <div>positive {positive} %</div>
+      </div>
+    )
+  }
 }
 
 const App = () =>
@@ -63,7 +70,7 @@ const App = () =>
       <button onClick={() => handleClick('neutral')}>neutral</button>
       <button onClick={() => handleClick('bad')}>bad</button>
       <Heading text="statistics" />
-      <Statistics good={good} neutral={neutral} bad={bad}/>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
