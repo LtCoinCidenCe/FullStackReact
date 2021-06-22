@@ -11,16 +11,16 @@ const Button = (props) =>
   return <button onClick={props.handler}>{props.text}</button>
 }
 
-const Statistic=(props) =>
-{
-  return <div>{props.text} {props.value}</div>
-}
+// const Statistic = (props) =>
+// {
+//   return <div>{props.text} {props.value}</div>
+// }
 
 const Statistics = (props) =>
 {
   console.log(props); // so they are already those updated values
   let { good, neutral, bad } = props;
-  
+
   if (good === 0 && neutral === 0 && bad === 0)
   {
     return <div>no feedback given</div>
@@ -31,15 +31,31 @@ const Statistics = (props) =>
     let average = (good - bad) / (good + neutral + bad);
     let positive = 100 * good / (good + neutral + bad);
     positive = `${positive} %`
-    
+
     return (
       <div>
-        <Statistic text='good' value={good}/>
-        <Statistic text='neutral' value={neutral}/>
-        <Statistic text='bad' value={bad}/>
-        <Statistic text='all' value={all}/>
-        <Statistic text='average' value={average}/>
-        <Statistic text='positive' value={positive}/>
+        <table>
+          <tbody>
+            <tr>
+              <td>good</td><td>{good}</td>
+            </tr>
+            <tr>
+              <td>neutral</td><td>{neutral}</td>
+            </tr>
+            <tr>
+              <td>bad</td><td>{bad}</td>
+            </tr>
+            <tr>
+              <td>all</td><td>{all}</td>
+            </tr>
+            <tr>
+              <td>average</td><td>{average}</td>
+            </tr>
+            <tr>
+              <td>positive</td><td>{positive}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     )
   }
@@ -70,7 +86,8 @@ const App = () =>
       b += 1;
       setBad(b);
     }
-    else {
+    else
+    {
       debugger;
     }
     // setAverage((g - b) / (all + 1));
@@ -81,9 +98,9 @@ const App = () =>
   return (
     <div>
       <Heading text="give feedback" />
-      <Button handler={()=>handleClick('good')} text='good'/>
-      <Button handler={()=>handleClick('neutral')} text='neutral'/>
-      <Button handler={()=>handleClick('bad')} text='bad'/>
+      <Button handler={() => handleClick('good')} text='good' />
+      <Button handler={() => handleClick('neutral')} text='neutral' />
+      <Button handler={() => handleClick('bad')} text='bad' />
       <Heading text="statistics" />
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
