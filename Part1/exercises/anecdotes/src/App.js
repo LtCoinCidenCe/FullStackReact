@@ -18,7 +18,10 @@ const App = () =>
   const [vote, setVote] = useState(points); // vote array
 
   let currentVote = vote[selected]; // when re-rendering, get value
-
+  
+  const [most,setMost]=useState(0); // index of most vote
+  let mostVote=vote[most]; // get value
+  
   console.log(selected, vote, currentVote);
 
   const getRandomInt = function (max)
@@ -31,6 +34,10 @@ const App = () =>
     let copy = [...vote];
     copy[selected] += 1;
     setVote(copy);
+    if(copy[selected]>mostVote)
+    {
+      setMost(selected);
+    }
   }
 
   const onNextClick = () =>
@@ -41,10 +48,14 @@ const App = () =>
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <div>{anecdotes[selected]}</div>
       <div>has {currentVote} votes</div>
       <button onClick={onVoteClick}>vote</button>
       <button onClick={onNextClick}>next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <div>{anecdotes[most]}</div>
+      <div>has {mostVote} votes</div>
     </div>
   )
 }
