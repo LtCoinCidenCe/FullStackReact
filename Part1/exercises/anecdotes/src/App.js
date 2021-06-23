@@ -13,24 +13,39 @@ const App = () =>
   ]
 
   const [selected, setSelected] = useState(0)
-  
-  function getRandomInt(max) {
+  const points = new Array(anecdotes.length);
+  points.fill(0);
+  const [vote, setVote] = useState(points); // vote array
+
+  let currentVote = vote[selected]; // when re-rendering, get value
+
+  console.log(selected, vote, currentVote);
+
+  const getRandomInt = function (max)
+  {
     return Math.floor(Math.random() * max);
   };;
-  
-  const onNextClick = () => {
-    let num=getRandomInt(anecdotes.length);
-    console.log(num);
+
+  const onVoteClick = () =>
+  {
+    let copy = [...vote];
+    copy[selected] += 1;
+    setVote(copy);
+  }
+
+  const onNextClick = () =>
+  {
+    let num = getRandomInt(anecdotes.length);
     setSelected(num);
   };;
-  
+
   return (
-    <>
-      <div>
-        {anecdotes[selected]}
-      </div>
+    <div>
+      <div>{anecdotes[selected]}</div>
+      <div>has {currentVote} votes</div>
+      <button onClick={onVoteClick}>vote</button>
       <button onClick={onNextClick}>next anecdote</button>
-    </>
+    </div>
   )
 }
 
