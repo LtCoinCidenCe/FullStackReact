@@ -1,15 +1,14 @@
 import React from 'react'
+import Note from './components/Note'
 
-const App = (props) =>
+const App = ({ notes }) =>
 {
-  const { notes } = props
-
   return (
     <div>
       <h1>Notes</h1>
       <ul>
         {notes.map(note =>
-          <li key={note.id}>{note.content}</li>
+          <Note key={note.id} note={note}/>  // Here the key is the attr of Note: element in the array
         )}
       </ul>
     </div>
