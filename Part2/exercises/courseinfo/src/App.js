@@ -28,12 +28,14 @@ const Course = (props) =>
 {
   const { course } = props;
   const { name, parts } = course; // {string array}
-  let sum = 0;
-  for (let index = 0; index < parts.length; index++)
+  const reducer = (accumulator, currentValue) =>
   {
-    const element = parts[index];
-    sum += element.exercises;
-  }
+    // accumulator is the number, initialized by reduce's 2nd param
+    // currentValue is the coming object
+    console.log('accumulator:', accumulator, currentValue);
+    return accumulator + currentValue.exercises;
+  };
+  const sum = parts.reduce(reducer, 0);
   return <div>
     <Header courseName={name} />
     <Content parts={parts} />
