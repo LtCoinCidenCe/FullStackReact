@@ -15,11 +15,20 @@ const App = () =>
   const formSubmit = (event) =>
   {
     event.preventDefault();
-    const newPerson = {
-      name: newName
-    };
-    setPersons(persons.concat(newPerson));
-    setNewName('');
+
+    const index = persons.findIndex(psn => psn.name === newName);
+    if (index === -1)
+    {
+      const newPerson = {
+        name: newName
+      };
+      setPersons(persons.concat(newPerson));
+      setNewName('');
+    }
+    else
+    {
+      alert(`${newName} is already added to the phonebook.`);
+    }
   }
 
   return (
