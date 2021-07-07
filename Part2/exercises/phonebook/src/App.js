@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Display from './components/display';
+import Filter from './components/filter'
+import InputForm from './components/inputForm';
 
 const App = () =>
 {
@@ -16,7 +19,7 @@ const App = () =>
   const filterWordChange = (event) =>
   {
     setFilterWord(event.target.value);
-  }
+  };
 
   const nameChange = (event) =>
   {
@@ -59,17 +62,11 @@ const App = () =>
   return (
     <div>
       <h2>Phonebook</h2>
-      <div><span>filter shown with </span><input value={filterWord} onChange={filterWordChange} /></div>
+      <Filter filterWord={filterWord} filterWordChange={filterWordChange} />
       <h2>add a new</h2>
-      <form onSubmit={formSubmit}>
-        <div>name: <input value={newName} onChange={nameChange} /></div>
-        <div>number: <input value={newNumber} onChange={numberChange} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
+      <InputForm formSubmit={formSubmit} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
       <h2>Numbers</h2>
-      <div>
-        {filtered.map(psn => <div key={psn.name}>{psn.name} {psn.number}</div>)}
-      </div>
+      <Display peopleList={filtered} />
     </div>
   )
 }
