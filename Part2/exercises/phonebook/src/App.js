@@ -1,20 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Display from './components/display';
 import Filter from './components/filter'
 import InputForm from './components/inputForm';
+import axios from 'axios';
 
 const App = () =>
 {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' },
-    { name: 'Kimi Räikkönen', number: '0465656565' }
-  ]);
+  // const [persons, setPersons] = useState([
+  //   { name: 'Arto Hellas', number: '040-123456' },
+  //   { name: 'Ada Lovelace', number: '39-44-5323523' },
+  //   { name: 'Dan Abramov', number: '12-43-234345' },
+  //   { name: 'Mary Poppendieck', number: '39-23-6423122' },
+  //   { name: 'Kimi Räikkönen', number: '0465656565' }
+  // ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterWord, setFilterWord] = useState('');
+
+  const hook = () =>
+  {
+    console.log('effect')
+    const eventHandler = (response) =>
+    {
+      console.log('promise fulfilled');
+      setPersons(response.data);
+    }
+    const promise = axios.get('http://localhost:3001/persons');
+    promise.then(eventHandler);
+  }
+
+  useEffect(hook, []);
 
   const filterWordChange = (event) =>
   {
@@ -41,7 +57,6 @@ const App = () =>
   const formSubmit = (event) =>
   {
     event.preventDefault();
-
     const index = persons.findIndex(psn => psn.name === newName);
     if (index === -1)
     {
