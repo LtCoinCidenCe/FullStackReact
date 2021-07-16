@@ -1,6 +1,7 @@
 const DetailC = ({ kanchri }) =>
 {
-  return <div>
+  // h2 has default margin
+  return <div style={{ marginBottom: 20 }}>
     <h2>{kanchri.name}</h2>
     <div>capital {kanchri.capital}</div>
     <div>population {kanchri.population}</div>

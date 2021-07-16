@@ -1,4 +1,5 @@
 import DetailC from "./DetailC";
+import EntityC from "./EntityC";
 
 const Result = (props) =>
 {
@@ -19,9 +20,9 @@ const Result = (props) =>
     }
     else if (matches.length > 1)
     {
-      // display all names
+      // display all entities with qualified
       return <div>{matches.map(
-        ct => <div key={ct.name}>{ct.name}</div>
+        ct => <EntityC key={ct.name} kanchri={ct} />
       )}
       </div>
     }
