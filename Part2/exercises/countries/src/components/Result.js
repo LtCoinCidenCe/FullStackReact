@@ -1,5 +1,6 @@
 import DetailC from "./DetailC";
 import EntityC from "./EntityC";
+import WeatherSummary from "./WeatherSummary";
 
 const Result = (props) =>
 {
@@ -28,8 +29,11 @@ const Result = (props) =>
     }
     else if (matches.length === 1)
     {
-      // display anything related to that country
-      return <DetailC kanchri={matches[0]} />
+      // display anything related to that one country
+      // add weather
+      return <div><DetailC kanchri={matches[0]} />
+        <WeatherSummary capital={matches[0].capital} />
+      </div>
     }
     else if (matches.length === 0)
     {

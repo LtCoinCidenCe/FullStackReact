@@ -1,7 +1,9 @@
+import '../App.css';
+
 const DetailC = ({ kanchri }) =>
 {
   // h2 has default margin
-  return <div style={{ marginBottom: 20 }}>
+  return <div className='style1'>
     <h2>{kanchri.name}</h2>
     <div>capital {kanchri.capital}</div>
     <div>population {kanchri.population}</div>
