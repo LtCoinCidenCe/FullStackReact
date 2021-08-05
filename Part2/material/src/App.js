@@ -27,6 +27,19 @@ const App = () =>
   useEffect(hook, [])
 
 
+  const toggleImportanceOf = id =>
+  {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    axios.put(url, changedNote).then(response =>
+    {
+      // note returned
+      setNotes(notes.map(note => note.id !== id ? note : response.data)) // array.map just to replace the new note
+    })
+  }
+
   const handleNoteChange = (event) =>
   {
     console.log(event.target.value);
@@ -71,7 +84,7 @@ const App = () =>
       </div>
       <ul>
         {notesToShow.map(note =>
-          <Note key={note.id} note={note} />  // Here the key is the attr of Note: element in the array
+          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />  // Here the key is the attr of Note: element in the array
         )}
       </ul>
       <form onSubmit={addNote}>
