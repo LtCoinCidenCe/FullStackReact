@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Note from './components/Note'
+import noteService from './service/notes'
 
 const App = () =>
 {
@@ -12,16 +12,15 @@ const App = () =>
 
   const hook = () =>
   {
-    console.log('effect')
-
-    const eventHandler = (response) =>
-    {
-      console.log('promise fulfilled');
-      setNotes(response.data);
-    }
-
-    const promise = axios.get('http://localhost:3001/notes');
-    promise.then(eventHandler);
+    // console.log('effect')
+    // const eventHandler = (response) =>
+    // {
+    //   console.log('promise fulfilled');
+    //   setNotes(response.data);
+    // }
+    // const promise = axios.get('http://localhost:3001/notes');
+    // promise.then(eventHandler);
+    noteService.getAll().then(initialNotes=>{setNotes(initialNotes)});
   }
 
   useEffect(hook, [])
@@ -29,15 +28,18 @@ const App = () =>
 
   const toggleImportanceOf = id =>
   {
-    const url = `http://localhost:3001/notes/${id}`
+    // const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
-
-    axios.put(url, changedNote).then(response =>
-    {
-      // note returned
-      setNotes(notes.map(note => note.id !== id ? note : response.data)) // array.map just to replace the new note
+    
+    noteService.update(id,changedNote).then(returnedNote=>{
+      setNotes(notes.map(note => note.id !== id ? note : returnedNote))
     })
+    // axios.put(url, changedNote).then(response =>
+    // {
+    //   // note returned
+    //   setNotes(notes.map(note => note.id !== id ? note : response.data)) // array.map just to replace the new note
+    // })
   }
 
   const handleNoteChange = (event) =>
@@ -54,14 +56,18 @@ const App = () =>
       date: new Date().toISOString(),
       important: Math.random() < 0.5
     }
-
-    axios
-      .post('http://localhost:3001/notes', noteObject)
-      .then(response =>
-      {
-        setNotes(notes.concat(response.data)) // new note returned
-        setNewNote('')
-      })
+    
+    noteService.create(noteObject).then(returnedNote=>{
+      setNotes(notes.concat(returnedNote));
+      setNewNote('');
+    })
+    // axios
+    //   .post('http://localhost:3001/notes', noteObject)
+    //   .then(response =>
+    //   {
+    //     setNotes(notes.concat(response.data)) // new note returned
+    //     setNewNote('')
+    //   })
   }
 
   const checkImportant = (note) =>
