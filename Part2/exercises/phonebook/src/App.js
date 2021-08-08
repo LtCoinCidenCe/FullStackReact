@@ -21,7 +21,7 @@ const App = () =>
   const numberChange = (event) => setNewNumber(event.target.value);
   const insensitiveInclude = (psn) => psn.name.toLowerCase().includes(filterWord.toLowerCase());
 
-  const filtered = filterWord ? persons.filter(insensitiveInclude) : persons; // to reduce consumption
+  const filtered = filterWord ? persons.filter(insensitiveInclude) : persons;
 
   const formSubmit = (event) =>
   {
@@ -46,7 +46,27 @@ const App = () =>
     }
     else
     {
-      alert(`${newName} is already added to the phonebook.`);
+      // update the number
+      // alert(`${newName} is already added to the phonebook.`);
+      if (window.confirm(`${newName} is already added to the phonebook. Replace the old number with the new one?`))
+      {
+        const targetPerson = {
+          ...persons[index],
+          number: newNumber
+        };
+        personService.update(targetPerson.id, targetPerson).then(returnedPerson =>
+        {
+          setPersons(persons.map(psn => psn.id !== targetPerson.id ? psn : returnedPerson));
+          setNewName('');
+          setNewNumber('');
+        })
+          .catch(error =>
+          {
+            // assume that the problem is that it is already deleted
+            alert(`the person '${newName}' was already deleted from server`);
+            setPersons(persons.filter(psn => psn.id !== targetPerson.id));
+          })
+      }
     }
   }
 
@@ -54,7 +74,8 @@ const App = () =>
   const removePerson = (id) =>
   {
     const targetPerson = persons.find(psn => psn.id === id);
-    const idx = persons.indexOf(targetPerson); // it is not guaranteed that the index of target in array is the same as id in the object
+    const idx = persons.indexOf(targetPerson); // it is not guaranteed that the index of target in array is the same as id in the object 
+    // (nor even close relation)
     if (window.confirm(`Delete ${targetPerson.name}`))
     {
       personService.remove(id).then(info =>

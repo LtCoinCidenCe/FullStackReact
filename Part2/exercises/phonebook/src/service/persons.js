@@ -25,6 +25,6 @@ const remove = (id) =>
   return request.then(response => response.data)
 }
 
-const personService = { getAll, create, update, remove };
+const personService = { getAll, create, update, remove }; // give it a name
 
 export default personService;
