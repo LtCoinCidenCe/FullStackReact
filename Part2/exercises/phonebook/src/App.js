@@ -50,6 +50,23 @@ const App = () =>
     }
   }
 
+  /** id is the id in the database, not index in persons array */
+  const removePerson = (id) =>
+  {
+    const targetPerson = persons.find(psn => psn.id === id);
+    const idx = persons.indexOf(targetPerson); // it is not guaranteed that the index of target in array is the same as id in the object
+    if (window.confirm(`Delete ${targetPerson.name}`))
+    {
+      personService.remove(id).then(info =>
+      {
+        console.log(info);
+        const newList = persons.slice(0, idx).concat(persons.slice(idx + 1));
+        setPersons(newList);
+      })
+        .catch(error => { alert(error) }); // try not to reach this line;
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -57,7 +74,7 @@ const App = () =>
       <h2>add a new</h2>
       <InputForm formSubmit={formSubmit} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
       <h2>Numbers</h2>
-      <Display peopleList={filtered} />
+      <Display peopleList={filtered} removePerson={removePerson} />
     </div>
   )
 }
