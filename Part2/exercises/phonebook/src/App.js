@@ -64,9 +64,16 @@ const App = () =>
         name: newName,
         number: newNumber
       };
-      setPersons(persons.concat(newPerson));
-      setNewName('');
-      setNewNumber('');
+      
+      // the server should be able to handle identical names for post, not here
+      // let me fix that when I have learned about server
+      axios.post('http://localhost:3001/persons', newPerson).then(returnedPerson =>
+      {
+        setPersons(persons.concat(returnedPerson.data));
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch(error => { alert(error) }); // try not to reach this line
     }
     else
     {
