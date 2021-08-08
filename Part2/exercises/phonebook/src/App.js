@@ -2,55 +2,24 @@ import React, { useState, useEffect } from 'react'
 import Display from './components/display';
 import Filter from './components/filter'
 import InputForm from './components/inputForm';
-import axios from 'axios';
+import personService from './service/persons';
 
 const App = () =>
 {
-  // const [persons, setPersons] = useState([
-  //   { name: 'Arto Hellas', number: '040-123456' },
-  //   { name: 'Ada Lovelace', number: '39-44-5323523' },
-  //   { name: 'Dan Abramov', number: '12-43-234345' },
-  //   { name: 'Mary Poppendieck', number: '39-23-6423122' },
-  //   { name: 'Kimi Räikkönen', number: '0465656565' }
-  // ]);
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterWord, setFilterWord] = useState('');
 
-  const hook = () =>
+  useEffect(() =>
   {
-    console.log('effect')
-    const eventHandler = (response) =>
-    {
-      console.log('promise fulfilled');
-      setPersons(response.data);
-    }
-    const promise = axios.get('http://localhost:3001/persons');
-    promise.then(eventHandler);
-  }
+    personService.getAll().then(initialPersons => { setPersons(initialPersons) });
+  }, []);
 
-  useEffect(hook, []);
-
-  const filterWordChange = (event) =>
-  {
-    setFilterWord(event.target.value);
-  };
-
-  const nameChange = (event) =>
-  {
-    setNewName(event.target.value);
-  };
-
-  const numberChange = (event) =>
-  {
-    setNewNumber(event.target.value);
-  };
-
-  const insensitiveInclude = (psn) =>
-  {
-    return psn.name.toLowerCase().includes(filterWord.toLowerCase());
-  }
+  const filterWordChange = (event) => setFilterWord(event.target.value);
+  const nameChange = (event) => setNewName(event.target.value);
+  const numberChange = (event) => setNewNumber(event.target.value);
+  const insensitiveInclude = (psn) => psn.name.toLowerCase().includes(filterWord.toLowerCase());
 
   const filtered = filterWord ? persons.filter(insensitiveInclude) : persons; // to reduce consumption
 
@@ -64,16 +33,16 @@ const App = () =>
         name: newName,
         number: newNumber
       };
-      
+
       // the server should be able to handle identical names for post, not here
       // let me fix that when I have learned about server
-      axios.post('http://localhost:3001/persons', newPerson).then(returnedPerson =>
+      personService.create(newPerson).then(returnedPerson =>
       {
-        setPersons(persons.concat(returnedPerson.data));
+        setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
       })
-      .catch(error => { alert(error) }); // try not to reach this line
+        .catch(error => { alert(error) }); // try not to reach this line
     }
     else
     {
