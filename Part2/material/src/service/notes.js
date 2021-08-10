@@ -31,4 +31,5 @@ const update = (id, newObject) =>
 //   update: update 
 // }
 
-export default { getAll, create, update }
+const noteService = { getAll, create, update };
+export default noteService;
