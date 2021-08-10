@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import App from './App.js'
-// import './index.css'
+import './index.css'
 // import axios from 'axios'
 
 // const promise = axios.get('http://localhost:3001/notes')
