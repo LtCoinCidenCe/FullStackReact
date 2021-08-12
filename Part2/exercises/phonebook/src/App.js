@@ -44,7 +44,7 @@ const App = () =>
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
-        setMsg(`Added ${returnedPerson.name}`);
+        setMsg(`s:Added ${returnedPerson.name}`);
         setTimeout(() => { setMsg(null) }, 5000);
       })
         .catch(error => { alert(error) }); // try not to reach this line
@@ -64,13 +64,14 @@ const App = () =>
           setPersons(persons.map(psn => psn.id !== targetPerson.id ? psn : returnedPerson));
           setNewName('');
           setNewNumber('');
-          setMsg(`Number of ${returnedPerson.name} changed`);
+          setMsg(`s:Number of ${returnedPerson.name} changed`);
           setTimeout(() => { setMsg(null) }, 5000);
         })
           .catch(error =>
           {
             // assume that the problem is that it is already deleted
-            alert(`the person '${newName}' was already deleted from server`);
+            setMsg(`e:Information of ${newName} has already been removed from the server`);
+            setTimeout(() => { setMsg(null) }, 5000);
             setPersons(persons.filter(psn => psn.id !== targetPerson.id));
           })
       }
@@ -90,6 +91,8 @@ const App = () =>
         console.log(info);
         const newList = persons.slice(0, idx).concat(persons.slice(idx + 1));
         setPersons(newList);
+        setMsg(`s:Deleted ${targetPerson.name}`);
+        setTimeout(() => { setMsg(null) }, 5000);
       })
         .catch(error => { alert(error) }); // try not to reach this line;
     }
