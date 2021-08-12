@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Display from './components/display';
 import Filter from './components/filter'
 import InputForm from './components/inputForm';
+import Notification from './components/notification';
 import personService from './service/persons';
 
 const App = () =>
@@ -10,6 +11,7 @@ const App = () =>
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterWord, setFilterWord] = useState('');
+  const [msg, setMsg] = useState(null);
 
   useEffect(() =>
   {
@@ -29,6 +31,7 @@ const App = () =>
     const index = persons.findIndex(psn => psn.name === newName);
     if (index === -1)
     {
+      // create a new number
       const newPerson = {
         name: newName,
         number: newNumber
@@ -41,6 +44,8 @@ const App = () =>
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
+        setMsg(`Added ${returnedPerson.name}`);
+        setTimeout(() => { setMsg(null) }, 5000);
       })
         .catch(error => { alert(error) }); // try not to reach this line
     }
@@ -59,6 +64,8 @@ const App = () =>
           setPersons(persons.map(psn => psn.id !== targetPerson.id ? psn : returnedPerson));
           setNewName('');
           setNewNumber('');
+          setMsg(`Number of ${returnedPerson.name} changed`);
+          setTimeout(() => { setMsg(null) }, 5000);
         })
           .catch(error =>
           {
@@ -91,6 +98,7 @@ const App = () =>
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={msg} />
       <Filter filterWord={filterWord} filterWordChange={filterWordChange} />
       <h2>add a new</h2>
       <InputForm formSubmit={formSubmit} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
