@@ -22,15 +22,41 @@ let notes = [
   }
 ]
 
-app.get('/', (request, response) => {
+app.get('/', (request, response) =>
+{
   response.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/notes', (request, response) => {
+app.get('/api/notes', (request, response) =>
+{
   response.json(notes)
 })
 
+app.get('/api/notes/:id', (request, response) =>
+{
+  const id = Number(request.params.id) // type should not be string
+  const note = notes.find(note => note.id === id)
+  if (note)
+  {
+    response.json(note)
+  }
+  else
+  {
+    // .end() for not showing anything
+    response.status(404).send('404 not found');
+  }
+})
+
+app.delete('/api/notes/:id', (request, response) =>
+{
+  const id = Number(request.params.id)
+  notes = notes.filter(note => note.id !== id)
+
+  response.status(204).end()
+})
+
 const PORT = 3001
-app.listen(PORT, () => {
+app.listen(PORT, () =>
+{
   console.log(`Server running on port ${PORT}`)
 })
