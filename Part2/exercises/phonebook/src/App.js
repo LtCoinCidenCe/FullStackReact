@@ -47,7 +47,7 @@ const App = () =>
         setMsg(`s:Added ${returnedPerson.name}`);
         setTimeout(() => { setMsg(null) }, 5000);
       })
-        .catch(error => { alert(error) }); // try not to reach this line
+        .catch(error => { setMsg(`e:${error.response.data.error}`) }); // try not to reach this line
     }
     else
     {
@@ -69,10 +69,9 @@ const App = () =>
         })
           .catch(error =>
           {
-            // assume that the problem is that it is already deleted
-            setMsg(`e:Information of ${newName} has already been removed from the server`);
-            setTimeout(() => { setMsg(null) }, 5000);
-            setPersons(persons.filter(psn => psn.id !== targetPerson.id));
+            console.log(error.response)
+            // problem with the update validation
+            setMsg(`e:${error.response.data.error}`);
           })
       }
     }
