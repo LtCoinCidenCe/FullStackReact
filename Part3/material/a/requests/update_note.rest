@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/notes/6130a32d099c61cc79e215b9
+content-type: application/json
+
+{
+	"content":"HTML is Easy",
+	"date":"2021-09-02T10:10:53.706Z",
+	"important":false,
+	"id":"6130a32d099c61cc79e215b9"
+}
